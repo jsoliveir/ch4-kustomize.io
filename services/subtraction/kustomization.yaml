@@ -1,0 +1,40 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+  - ../.template/api
+images:
+  - name: <template>
+    newName: jsoliveira/api-services-subtraction
+    newTag: latest-test
+  - name: '*addition'
+    newTag: master.v1399550677
+  - name: '*calculator'
+    newTag: master.v1399550677
+  - name: '*client'
+    newTag: master.v1399550677
+  - name: '*division'
+    newTag: master.v1399550677
+  - name: '*multiplication'
+    newTag: master.v1399550677
+  - name: '*remainder'
+    newTag: master.v1399550677
+  - name: '*subtraction'
+    newTag: master.v1399550677
+commonLabels:
+  name: subtraction
+replacements:
+  - source:
+      kind: Deployment
+      fieldPath: metadata.labels.name
+    targets:
+      - select:
+          kind: Deployment
+        fieldPaths:
+          - metadata.name
+          - spec.selector.matchLabels.app
+          - spec.template.metadata.labels.app
+      - select:
+          kind: Service
+        fieldPaths:
+          - metadata.name
+          - spec.selector.app

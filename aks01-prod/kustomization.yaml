@@ -1,0 +1,40 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonAnnotations:
+  # making sure that only master images come into aks-dev
+  fluxcd.io/tag.app: glob:master*
+  cluster: aks01-prod.westeurope.cloudapp.azure.com
+  environment: prod
+images:
+  - name: '*addition'
+    newTag: master.v1399906011
+  - name: '*calculator'
+    newTag: master.v1399906011
+  - name: '*client'
+    newTag: master.v1399906011
+  - name: '*division'
+    newTag: master.v1399906011
+  - name: '*multiplication'
+    newTag: master.v1399906011
+  - name: '*remainder'
+    newTag: master.v1399906011
+  - name: '*subtraction'
+    newTag: master.v1399906011
+bases:
+  - ../services/multiplication
+  - ../services/subtraction
+  - ../services/calculator
+  - ../services/division
+  - ../services/addition
+  - ../services/client
+resources:
+  - namespace.yaml
+replacements:
+  - source:
+      kind: Ingress
+      fieldPath: metadata.annotations.cluster
+    targets:
+      - select:
+          kind: Ingress
+        fieldPaths:
+          - spec.rules.0.host

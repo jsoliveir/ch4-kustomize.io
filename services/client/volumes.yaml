@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <template>
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          volumeMounts:
+            - name: client-config
+              mountPath: /opt/app/config.json
+              subPath: config.json
+              readOnly: false
+          livenessProbe:
+            $patch: delete
+          readinessProbe:
+            $patch: delete
+      volumes:
+        - name: client-config
+          configMap:
+            name: client-config
+          

@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonAnnotations:
+  # making sure that only develop images come into aks-dev
+  fluxcd.io/tag.app: glob:develop*
+  cluster: aks01-dev.westeurope.cloudapp.azure.com
+  environment: dev
+images:
+  - name: '*client'
+    newTag: develop.v2
+  - name: '*subtraction'
+    newTag: develop.v2
+  - name: '*calculator'
+    newTag: develop.v2
+  - name: '*multiplication'
+    newTag: develop.v2
+  - name: '*addition'
+    newTag: develop.v2
+  - name: '*division'
+    newTag: develop.v2
+bases:
+  - ../services
+resources:
+  - namespace.yaml
+replacements:
+  - source:
+      kind: Ingress
+      fieldPath: metadata.annotations.cluster
+    targets:
+      - select:
+          kind: Ingress
+        fieldPaths:
+          - spec.rules.0.host

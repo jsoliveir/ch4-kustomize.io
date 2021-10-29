@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+metadata:
+  name: calculator
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: aks01-dev.westeurope.cloudapp.azure.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/calculator"
+        backend:
+          service:
+            name: calculator
+            port: 
+              number: 80

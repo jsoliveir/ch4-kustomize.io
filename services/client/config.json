@@ -1,0 +1,40 @@
+{
+  "logLevel": "info",
+  "calculatorHostname": "calculator.api.svc",
+  "auth": "Bearer base-client",
+  "mainLoopSleep": {
+      "min": 1000,
+      "max": 3000
+  },
+  "expressions": {
+      "nestedProbability": [1, 1, 1],
+      "min": 1,
+      "max": 4,
+
+      "addition": {
+          "probability": 1,
+          "min": 1,
+          "max": 4
+      },
+      "division": {
+          "probability": 1,
+          "min": 1,
+          "max": 4
+      },
+      "multiplication": {
+          "probability": 1,
+          "min": 1,
+          "max": 4
+      },
+      "remainder": {
+          "probability": -1,
+          "min": 1,
+          "max": 4
+      },
+      "subtraction": {
+          "probability": -1,
+          "min": 1,
+          "max": 4
+      }
+  }
+}

@@ -1,0 +1,34 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: api
+bases:
+  - ../.template/api
+images:
+  - name: <template>
+    newName: jsoliveira/api-services-client
+    newTag: latest-test
+commonLabels:
+  app: client
+replacements:
+  - source:
+      kind: Deployment
+      fieldPath: metadata.labels.app
+    targets:
+      - select:
+          kind: Deployment
+        fieldPaths:
+          - metadata.name
+          - spec.template.metadata.labels.app
+      - select:
+          kind: Service
+        fieldPaths:
+          - metadata.name
+          - spec.selector.app
+patchesStrategicMerge:
+  - volumes.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+  - name: client-config
+    files:
+      - config.json
